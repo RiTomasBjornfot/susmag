@@ -6,3 +6,4 @@ cythonize/
 *.c
 *pyx
 *.so
+*.odt#
