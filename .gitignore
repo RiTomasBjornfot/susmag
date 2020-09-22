@@ -1,0 +1,8 @@
+result
+data
+__pycache__
+.vscode
+cythonize/
+*.c
+*pyx
+*.so
