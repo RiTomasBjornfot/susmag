@@ -4,7 +4,7 @@ import numpy as np
 import cv2, os
 from camcom import Camcom
 from hdpos import Hd
-
+#remove this comment
 _join = os.path.join
 def run(iter, find_qr=False):
   # get image
