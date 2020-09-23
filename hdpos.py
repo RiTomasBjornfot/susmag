@@ -1,6 +1,6 @@
 import numpy as np
 import cv2, os
-from qrreader import QRreader
+#from qrreader import QRreader
 
 _join = os.path.join
 _arr = np.array
