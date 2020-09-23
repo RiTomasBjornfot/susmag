@@ -1,8 +1,6 @@
 # SUSMAG
 This is the repository for susmag release 1.
 
-This software is a part of the susmag installation. It finds a harddrive on the conveyor using a USB camera.
-
 ## Installation
 ### LabView
 Install the needed binaries from NI
