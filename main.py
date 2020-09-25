@@ -6,13 +6,14 @@ from camcom import Camcom
 from hdpos import Hd
 #remove this comment
 _join = os.path.join
+
 def run(iter, find_qr=False):
   # get image
   #im, _ = cam .grab_one()
   im = cv2.imread(_join(_dir, fname))
   im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)
   # detect hd
-  hd = Hd(im)
+  hd = Hd(im,settings_file='settings/settings.json')
   hd.run()
   if len(hd.valid_area) > 0:
     # hard drive coordinates
@@ -29,4 +30,4 @@ if __name__== '__main__':
   _dir = 'data/run'
   #while True:
   for i, fname in enumerate(os.listdir(_dir)):
-    run(i, find_qr=True)
+    run(i, find_qr=False)

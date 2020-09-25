@@ -1,6 +1,5 @@
 import numpy as np
-import cv2, os
-#from qrreader import QRreader
+import cv2, os, json
 
 _join = os.path.join
 _arr = np.array
@@ -10,12 +9,12 @@ class Hd:
   Finds a hard drive in an image.
   It reads a settings 
   '''
-  def __init__(self, im, settings=''):
+  def __init__(self, im, settings_file=''):
     '''
     Loads settings and image.
     '''
     self.im = im
-    if settings == '':
+    if settings_file == '':
       self.settings = {
         "limits" : {
           "color": [[-1, 50], [-1, 50], [50, 100]],
@@ -27,7 +26,8 @@ class Hd:
         "image_scale": 50
       }
     else:
-      self.settings = settings
+      with open(settings_file, 'r') as fp:
+        self.settings = json.load(fp)
     self.ppmm = self.settings['ppmm']*self.settings['image_scale']/100
 
   def make_binary_image(self):
