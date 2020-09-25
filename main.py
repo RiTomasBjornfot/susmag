@@ -1,17 +1,13 @@
-
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2, os
 from camcom import Camcom
 from hdpos import Hd
-#remove this comment
 _join = os.path.join
 
-def run(iter, find_qr=False):
+def run(cam, iter, find_qr=False):
   # get image
-  #im, _ = cam .grab_one()
-  im = cv2.imread(_join(_dir, fname))
-  im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)
+  im, _ = cam.grab_one()
   # detect hd
   hd = Hd(im,settings_file='settings/settings.json')
   hd.run()
@@ -24,10 +20,12 @@ def run(iter, find_qr=False):
     cv2.polylines(img, [box], True, (0, 255, 0), 4)
     writename = str(iter) + '.png'
     cv2.imwrite(_join('result', writename), img)
+  return hd
 
 if __name__== '__main__':
-  #cam = Camcom('settings/acA2040_Default.pfs')
-  _dir = 'data/run'
-  #while True:
-  for i, fname in enumerate(os.listdir(_dir)):
-    run(i, find_qr=False)
+  cam = Camcom('settings/acA2040_Default.pfs')
+  i = 0
+  while True:
+    hd = run(cam, i)
+    if len(hd.valid_area) > 0:
+      i += 1
