@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import cv2, os
+import cv2, os,time
 from camcom import Camcom
 from hdpos import Hd
 _join = os.path.join
@@ -29,3 +29,4 @@ if __name__== '__main__':
     hd = run(cam, i)
     if len(hd.valid_area) > 0:
       i += 1
+      time.sleep(0.5)
