@@ -1,3 +1,8 @@
+# -*- encoding: utf-8 -*-
+'''
+Author: Tomas Björnfot (tomas.bjornfot@ri.se)
+(c) copyright by RISE AB
+'''
 import numpy as np
 import cv2, os, json
 
@@ -23,7 +28,10 @@ class Hd:
           },
         "blur_level": 20,
         "ppmm": 6.55,
-        "image_scale": 50
+        "image_scale": 50,
+        "outfile": '../.out',
+        "result_dir": '../results',
+        "wait": 0.5
       }
     else:
       with open(settings_file, 'r') as fp:

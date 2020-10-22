@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 '''
 Author: Tomas Björnfot (tomas.bjornfot@ri.se)
-Created: 2020-05-01
 (c) copyright by RISE AB
 '''
 import matplotlib.pyplot as plt
@@ -12,7 +11,7 @@ import time, os
 
 class Camcom:
   '''
-  A class to handle Basler cameras
+  A class to handle Basler USB cameras
   '''
   def __init__(self, configfile):
     self.cvt = self.converter()
@@ -75,7 +74,7 @@ class Camcom:
 
   def grab_one(self, info=False):
     '''
-    Works better
+    Grabs one image. Works better than grab
     Returns
     -------
       - the image and the time is was taken
@@ -150,6 +149,6 @@ class Camcom:
 
 # --- MAIN --- #
 if __name__ == '__main__':
-  cam = Camcom('acA1300_2020-04-29.pfs')
+  cam = Camcom('.pfs')
   cam.grab_and_save('data/test', 'test.png', 1, 1)
   cam.close()

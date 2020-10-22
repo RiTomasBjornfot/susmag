@@ -6,5 +6,8 @@
   },
   "blur_level": 20,
   "ppmm": 6.55,
-  "image_scale": 50
+  "image_scale": 50,
+  "outfile": "../.out",
+  "result_dir": "../results",
+  "wait": 0.5
 }
