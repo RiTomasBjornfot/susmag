@@ -29,9 +29,10 @@ class Hd:
         "blur_level": 20,
         "ppmm": 6.55,
         "image_scale": 50,
-        "outfile": '../.out',
+        "outfile": '../results/out.txt',
         "result_dir": '../results',
-        "wait": 0.5
+        "waitdrive": 2.0,
+        "waitnodrive": 0.2
       }
     else:
       with open(settings_file, 'r') as fp:
