@@ -2,12 +2,13 @@
   "limits" : {
     "color": [[-1, 50], [-1, 50], [50, 100]],
     "hd_types": ["hd_35"], 
-    "area":[[13500, 16000]]
+    "area":[[14000, 15500]]
   },
   "blur_level": 20,
   "ppmm": 6.55,
   "image_scale": 50,
-  "outfile": "../.out",
+  "outfile": "../results/out.txt",
   "result_dir": "../results",
-  "wait": 0.5
+  "waitdrive": 2.0,
+  "waitnodrive": 0.2
 }
