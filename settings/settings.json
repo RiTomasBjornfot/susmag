@@ -7,8 +7,8 @@
   "blur_level": 20,
   "ppmm": 6.55,
   "image_scale": 50,
-  "outfile": "../results/out.txt",
-  "result_dir": "../results",
-  "waitdrive": 2.0,
-  "waitnodrive": 0.2
+  "outfile": "../image_results/msg",
+  "result_dir": "../image_results",
+  "waitdrive": 1,
+  "waitnodrive": 0.05
 }

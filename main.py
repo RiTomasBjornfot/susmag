@@ -21,8 +21,9 @@ def run(i, cam):
     img = cv2.cvtColor(hd.im, cv2.COLOR_BGR2RGB)
     cv2.polylines(img, [box], True, (0, 255, 0), 4)
     try:
-      cv2.imwrite(_join(hd.settings['result_dir'], 'im.png'), img)
-      with open(hd.settings['outfile'], 'w') as fp:
+      imi = i % 10
+      cv2.imwrite(_join(hd.settings['result_dir'], 'im_'+str(imi)+'.png'), img)
+      with open(hd.settings['outfile']+'_'+str(imi)+'.txt', 'w') as fp:
         data = [i for item in hd.boxes[0] for i in item]
         fp.write(str(data)[1:-1].replace(', ', '\n')+'\n'+str(t0)+'\n')
     except:
@@ -32,7 +33,7 @@ def run(i, cam):
     time.sleep(hd.settings['waitdrive'])
     i += 1
   else:
-    #print('no harddrive')
+    print('no harddrive')
     time.sleep(hd.settings['waitnodrive'])
   return i
 
