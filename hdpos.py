@@ -19,24 +19,8 @@ class Hd:
     Loads settings and image.
     '''
     self.im = im
-    if settings_file == '':
-      self.settings = {
-        "limits" : {
-          "color": [[-1, 50], [-1, 50], [50, 100]],
-          "hd_types": ["hd_35"], 
-          "area":[[13500, 16000]]
-          },
-        "blur_level": 20,
-        "ppmm": 6.55,
-        "image_scale": 50,
-        "outfile": '../results/out.txt',
-        "result_dir": '../results',
-        "waitdrive": 2.0,
-        "waitnodrive": 0.2
-      }
-    else:
-      with open(settings_file, 'r') as fp:
-        self.settings = json.load(fp)
+    with open(settings_file, 'r') as fp:
+      self.settings = json.load(fp)
     self.ppmm = self.settings['ppmm']*self.settings['image_scale']/100
 
   def make_binary_image(self):
