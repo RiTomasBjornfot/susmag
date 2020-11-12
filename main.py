@@ -15,14 +15,16 @@ _join = os.path.join
 def run(i, cam):
   im, t0 = cam.grab_one()
   hd = Hd(im, settings_file='settings/settings.json')
+  fmt = hd.settings['image_format']
+  nim = hd.settings['no_images']
   hd.run()
   if len(hd.valid_area) > 0:
     box = np.int0(hd.boxes[0])
     img = cv2.cvtColor(hd.im, cv2.COLOR_BGR2RGB)
     cv2.polylines(img, [box], True, (0, 255, 0), 4)
     try:
-      imi = i % 10
-      cv2.imwrite(_join(hd.settings['result_dir'], 'im_'+str(imi)+'.png'), img)
+      imi = i % nim
+      cv2.imwrite(_join(hd.settings['result_dir'], 'im_'+str(imi)+'.'+fmt), img)
       with open(hd.settings['outfile']+'_'+str(imi)+'.txt', 'w') as fp:
         data = [i for item in hd.boxes[0] for i in item]
         fp.write(str(data)[1:-1].replace(', ', '\n')+'\n'+str(t0)+'\n')

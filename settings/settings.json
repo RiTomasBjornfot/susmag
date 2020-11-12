@@ -2,11 +2,13 @@
   "limits" : {
     "color": [[-1, 50], [-1, 50], [50, 100]],
     "hd_types": ["hd_35"], 
-    "area":[[14000, 15500]]
+    "area":[[14000, 16000]]
   },
   "blur_level": 20,
-  "ppmm": 6.55,
+  "ppmm": 5.08,
   "image_scale": 50,
+  "image_format": "jpg",
+  "no_images": 1,
   "outfile": "../image_results/msg",
   "result_dir": "../image_results",
   "waitdrive": 1,
