@@ -5,12 +5,33 @@ Author: Tomas Björnfot (tomas.bjornfot@ri.se)
 '''
 import matplotlib.pyplot as plt
 import numpy as np
-import cv2, os, time
+import cv2, os, time, json
 from datetime import datetime as dt
 from camcom import Camcom
 from hdpos import Hd
 
 _join = os.path.join
+
+def get_signal_file_name(fname):
+  with open(fname, 'r') as fp:
+    data = json.load(fp)
+  return data['signal_file']
+
+def signal_handler(fname):
+  with open(fname, 'r') as fp:
+    try:
+      sig = float(fp.readline())
+      delta = sig - time.time()
+      if delta < 0:
+        # event has happend
+        return 0
+      if delta > 0:
+        time.sleep(delta)
+        return 1
+    except:
+      print('cannot read signal file')
+      return -1
+
 
 def run(i, cam):
   im, t0 = cam.grab_one()
@@ -41,5 +62,7 @@ def run(i, cam):
 
 if __name__== '__main__':
   cam, i = Camcom('settings/acA2040_NoCrop.pfs'), 0
+  fname = get_signal_file_name('settings/settings.json')
   while True:
-    i = run(i, cam)
+    if signal_handler(fname) == 1:
+      i = run(i, cam)

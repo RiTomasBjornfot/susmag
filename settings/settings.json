@@ -11,6 +11,7 @@
   "no_images": 1,
   "outfile": "../image_results/msg",
   "result_dir": "../image_results",
+  "signal_file": "signal.txt",
   "waitdrive": 1,
   "waitnodrive": 0.05
 }
