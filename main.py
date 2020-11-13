@@ -61,7 +61,7 @@ def run(i, cam):
   return i
 
 if __name__== '__main__':
-  cam, i = Camcom('settings/acA2040_NoCrop.pfs'), 0
+  cam, i = Camcom('settings/acA2040_Crop.pfs'), 0
   fname = get_signal_file_name('settings/settings.json')
   while True:
     if signal_handler(fname) == 1:
