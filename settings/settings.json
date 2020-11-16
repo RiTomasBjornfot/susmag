@@ -13,5 +13,5 @@
   "result_dir": "../image_results",
   "signal_file": "signal.txt",
   "waitdrive": 1,
-  "waitnodrive": 0.05
+  "waitnodrive": 0.5
 }

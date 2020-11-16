@@ -9,7 +9,7 @@ import cv2, os, time, json
 from datetime import datetime as dt
 from camcom import Camcom
 from hdpos import Hd
-
+from pdb import set_trace as _stop
 _join = os.path.join
 
 def get_signal_file_name(fname):
@@ -22,6 +22,7 @@ def signal_handler(fname):
     try:
       sig = float(fp.readline())
       delta = sig - time.time()
+      print('delta', delta)
       if delta < 0:
         # event has happend
         return 0
@@ -38,13 +39,13 @@ def run(i, cam):
   hd = Hd(im, settings_file='settings/settings.json')
   fmt = hd.settings['image_format']
   nim = hd.settings['no_images']
+  imi = i % nim
   hd.run()
   if len(hd.valid_area) > 0:
     box = np.int0(hd.boxes[0])
     img = cv2.cvtColor(hd.im, cv2.COLOR_BGR2RGB)
     cv2.polylines(img, [box], True, (0, 255, 0), 4)
     try:
-      imi = i % nim
       cv2.imwrite(_join(hd.settings['result_dir'], 'im_'+str(imi)+'.'+fmt), img)
       with open(hd.settings['outfile']+'_'+str(imi)+'.txt', 'w') as fp:
         data = [i for item in hd.boxes[0] for i in item]
@@ -57,12 +58,30 @@ def run(i, cam):
     i += 1
   else:
     print('no harddrive')
+    img = cv2.cvtColor(hd.im, cv2.COLOR_BGR2RGB)
+    cv2.imwrite(_join(hd.settings['result_dir'], 'im_'+str(imi)+'.'+fmt), img)
+    with open(hd.settings['outfile']+'_'+str(imi)+'.txt', 'w') as fp:
+      #data = [i for item in hd.boxes[0] for i in item]
+      #fp.write(str(data)[1:-1].replace(', ', '\n')+'\n'+str(t0)+'\n')
+      [fp.write('0'+'\n') for _ in range(8)]
+      fp.write(str(t0)+'\n')
+      #fp.write(_zeros+str(t0)+'\n')
     time.sleep(hd.settings['waitnodrive'])
   return i
 
 if __name__== '__main__':
   cam, i = Camcom('settings/acA2040_Crop.pfs'), 0
+
+  # read the settings file
+  with open('settings/settings.json', 'r') as fp:
+    s = json.load(fp)
+  
   fname = get_signal_file_name('settings/settings.json')
+
   while True:
-    if signal_handler(fname) == 1:
+    sh = signal_handler(fname)
+    print('sh', sh)
+    if sh == 1:
       i = run(i, cam)
+    if sh == 0:
+      time.sleep(s['waitnodrive'])
