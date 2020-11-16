@@ -12,19 +12,12 @@ from hdpos import Hd
 from pdb import set_trace as _stop
 _join = os.path.join
 
-def get_signal_file_name(fname):
-  with open(fname, 'r') as fp:
-    data = json.load(fp)
-  return data['signal_file']
-
 def signal_handler(fname):
   with open(fname, 'r') as fp:
     try:
-      sig = float(fp.readline())
-      delta = sig - time.time()
-      print('delta', delta)
+      delta = float(fp.readline()) - time.time()
+      print('delta:', delta)
       if delta < 0:
-        # event has happend
         return 0
       if delta > 0:
         time.sleep(delta)
@@ -33,55 +26,46 @@ def signal_handler(fname):
       print('cannot read signal file')
       return -1
 
-
-def run(i, cam):
+def run(i, cam, settings):
+  '''
+  '''
   im, t0 = cam.grab_one()
-  hd = Hd(im, settings_file='settings/settings.json')
-  fmt = hd.settings['image_format']
-  nim = hd.settings['no_images']
-  imi = i % nim
+  hd = Hd(im, settings)
   hd.run()
+  fmt = hd.settings['image_format']
+  imi = i % hd.settings['no_images']
+  img = cv2.cvtColor(hd.im, cv2.COLOR_BGR2RGB)
   if len(hd.valid_area) > 0:
+    print('harddrive detected', np.round(hd.valid_area[0]))
     box = np.int0(hd.boxes[0])
-    img = cv2.cvtColor(hd.im, cv2.COLOR_BGR2RGB)
     cv2.polylines(img, [box], True, (0, 255, 0), 4)
-    try:
-      cv2.imwrite(_join(hd.settings['result_dir'], 'im_'+str(imi)+'.'+fmt), img)
-      with open(hd.settings['outfile']+'_'+str(imi)+'.txt', 'w') as fp:
-        data = [i for item in hd.boxes[0] for i in item]
-        fp.write(str(data)[1:-1].replace(', ', '\n')+'\n'+str(t0)+'\n')
-    except:
-      print('Can\'t write file!')
-      pass
-    print('harddrive detected', hd.valid_area[0])
-    time.sleep(hd.settings['waitdrive'])
-    i += 1
+    data = [i for item in hd.boxes[0] for i in item]
   else:
-    print('no harddrive')
-    img = cv2.cvtColor(hd.im, cv2.COLOR_BGR2RGB)
+    print('no harddrive detected')
+    data = [0 for item in range(8)]
+  # write to files
+  try:
     cv2.imwrite(_join(hd.settings['result_dir'], 'im_'+str(imi)+'.'+fmt), img)
     with open(hd.settings['outfile']+'_'+str(imi)+'.txt', 'w') as fp:
-      #data = [i for item in hd.boxes[0] for i in item]
-      #fp.write(str(data)[1:-1].replace(', ', '\n')+'\n'+str(t0)+'\n')
-      [fp.write('0'+'\n') for _ in range(8)]
-      fp.write(str(t0)+'\n')
-      #fp.write(_zeros+str(t0)+'\n')
+      fp.write(str(data)[1:-1].replace(', ', '\n')+'\n'+str(t0)+'\n')
+  except:
+    print('Can\'t write file!')
+  # wait
+  if len(hd.valid_area) > 0:
+    time.sleep(hd.settings['waitdrive'])
+  else:
     time.sleep(hd.settings['waitnodrive'])
-  return i
+  return i+1
 
 if __name__== '__main__':
-  cam, i = Camcom('settings/acA2040_Crop.pfs'), 0
-
   # read the settings file
-  with open('settings/settings.json', 'r') as fp:
+  fname = 'settings/settings.json'
+  with open(fname, 'r') as fp:
     s = json.load(fp)
-  
-  fname = get_signal_file_name('settings/settings.json')
-
+  # inits the camera
+  cam = Camcom(s['camera_settings'])
+  # The main loop
+  i = 0
   while True:
-    sh = signal_handler(fname)
-    print('sh', sh)
-    if sh == 1:
-      i = run(i, cam)
-    if sh == 0:
-      time.sleep(s['waitnodrive'])
+    if signal_handler(s['signal_file']) == 1:
+      i = run(i, cam, s)

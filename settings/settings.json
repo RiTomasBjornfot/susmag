@@ -9,6 +9,7 @@
   "image_scale": 50,
   "image_format": "jpg",
   "no_images": 1,
+  "camera_settings": "settings/acA2040_Crop.pfs",
   "outfile": "../image_results/msg",
   "result_dir": "../image_results",
   "signal_file": "signal.txt",

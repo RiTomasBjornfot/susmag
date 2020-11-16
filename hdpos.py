@@ -14,13 +14,12 @@ class Hd:
   Finds a hard drive in an image.
   It reads a settings 
   '''
-  def __init__(self, im, settings_file=''):
+  def __init__(self, im, settings):
     '''
     Loads settings and image.
     '''
     self.im = im
-    with open(settings_file, 'r') as fp:
-      self.settings = json.load(fp)
+    self.settings = settings
     self.ppmm = self.settings['ppmm']*self.settings['image_scale']/100
 
   def make_binary_image(self):
