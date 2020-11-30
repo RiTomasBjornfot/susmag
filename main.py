@@ -36,6 +36,7 @@ def run(i, cam, settings):
   imi = i % hd.settings['no_images']
   img = cv2.cvtColor(hd.im, cv2.COLOR_BGR2RGB)
   if len(hd.valid_area) > 0:
+    # NOTE: Only the first valid box is used 
     print('harddrive detected', np.round(hd.valid_area[0]))
     box = np.int0(hd.boxes[0])
     cv2.polylines(img, [box], True, (0, 255, 0), 4)
